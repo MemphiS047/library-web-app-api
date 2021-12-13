@@ -1,6 +1,8 @@
+from re import S
 from flask import Flask
 from flask_restful import Api, Resource
-
+from sqlalchemy import select
+from sqlalchemy import or_
 app = Flask(__name__)
 api = Api(app)
 
@@ -75,7 +77,16 @@ class BookModel(Base):
             session.add(self)
             session.commit()
 
-class CreateBook(Resource):
+    @classmethod
+    def get_search_result(cls, search_string):
+        search = "%{}%".format(search_string)
+        with Session(engine) as session:
+            # result_book = session.execute(select(cls).where(cls.book_name.like(search)))
+            result = session.execute(select(cls).where(cls.author.like(search) & cls.book_name.like(search)))
+            for row in result:
+                print(row[0].book_name)
+                print(row[0].author)
+class ManageBook(Resource):
     parser = reqparse.RequestParser()
 
     parser.add_argument('book_id', type=int)
@@ -91,13 +102,28 @@ class CreateBook(Resource):
     parser.add_argument('translator', type=str)
 
     def post(self):
-        data = CreateBook.parser.parse_args()
+        data = ManageBook.parser.parse_args()
         print("DATA -----------------")
         print(data)
         book = BookModel(data['book_id'], data['book_name'], data['prolog'], data['author'], data['Publisher'], data['Language'], data['Publication_Date'], data['numberOFPages'], data['Dimensions'], data['editionNumber'], data['translator'])
 
         book.create_book()
         return {"message":"Book created successfully"}, 201
+
+    def get(self, search_string):
+        temp = BookModel.get_search_result(search_string)
+        print(temp)
+        return {
+            "message":"successfull"
+        }
+
+class GetBook(Resource):
+    def get(self, search_string):
+        print("!@#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        BookModel.get_search_result(search_string)
+        return {
+            "message":"successfull"
+        }
 # +------------------+--------------+------+-----+---------+----------------+
 # | Field            | Type         | Null | Key | Default | Extra          |
 # +------------------+--------------+------+-----+---------+----------------+
@@ -114,7 +140,8 @@ class CreateBook(Resource):
 # | translator       | varchar(50)  | YES  |     | NULL    |                |
 # +------------------+--------------+------+-----+---------+----------------+
 
-api.add_resource(CreateBook, '/createbook')
+api.add_resource(ManageBook, '/createbook')
+api.add_resource(GetBook, '/getbook/<string:search_string>')
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
