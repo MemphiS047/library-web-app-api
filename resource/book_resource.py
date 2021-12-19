@@ -18,6 +18,7 @@ class BookAPI(Resource):
     parser.add_argument('Dimensions', type=str)
     parser.add_argument('editionNumber', type=str)
     parser.add_argument('translator', type=int)
+    parser.add_argument('searchString', type=str)
 
 
     def post(self):
@@ -31,9 +32,19 @@ class BookAPI(Resource):
 
 
     def get(self):
-        search_string = "asda"
-        temp = BookModel.get_search_result(search_string)
-        print(temp)
-        return {
-            "message":"successfull"
+        data = BookAPI.parser.parse_args()
+        query = {
+            "queryLst" : []
         }
+        try:
+            search_string = data['searchString']
+        except KeyError as err:
+            print(err)
+            return {"message":"Did not recieve any search string"}, 400
+        result = BookModel.get_search_result(search_string)
+        for row in result:
+            query["queryLst"].append({
+                "book_name":f"{row[0].book_name}",
+                "author":f"{row[0].author}"
+                });
+        return query, 201, {'Access-Control-Allow-Origin': '*'}

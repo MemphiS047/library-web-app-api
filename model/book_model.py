@@ -42,18 +42,17 @@ class BookModel(Base):
             session.commit()
     
     def delete_book(self):
-        pass
+        with Session(engine) as session:
+            session.delete(self)
+            session.commit()
 
     
-    def update_book(self):
-        pass
+    def update_bname(self, new_name):
+        with Session(engine) as session:
+            session.query(self.__class__).filter(self.__class__.name == self.name).update({'status': new_name})
 
     @classmethod
     def get_search_result(cls, search_string):
         search = "%{}%".format(search_string)
-        with Session(engine) as session:
-            # result_book = session.execute(select(cls).where(cls.book_name.like(search)))
-            result = session.execute(select(cls).where(cls.author.like(search) & cls.book_name.like(search)))
-            for row in result:
-                print(row[0].book_name)
-                print(row[0].author)
+        result = Session(engine).execute(select(cls).where(cls.author.like(search) | cls.book_name.like(search)))
+        return result
