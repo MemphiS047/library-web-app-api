@@ -38,16 +38,16 @@ class BookModel(Base):
         with Session(engine) as session:
             session.add(self)
             session.commit()
-    
+
+    def update_bookname(self, new_name):
+        with Session(engine) as session:
+            session.query(self.__class__).filter(self.__class__.name == self.name).update({'status': new_name})
+            session.commit() 
+
     def delete_book(self):
         with Session(engine) as session:
             session.delete(self)
             session.commit()
-
-    
-    def update_bname(self, new_name):
-        with Session(engine) as session:
-            session.query(self.__class__).filter(self.__class__.name == self.name).update({'status': new_name})
 
     @classmethod
     def get_search_result(cls, search_string):

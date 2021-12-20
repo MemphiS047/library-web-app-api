@@ -1,12 +1,8 @@
 import datetime
-from re import search
 
 from flask import request
 from flask_restful import Resource, reqparse
 from model.book_model import BookModel
-from sqlalchemy import Column, DateTime, Integer, String
-from sqlalchemy.orm import Session
-
 
 class BookAPI(Resource):
     parser = reqparse.RequestParser()
@@ -31,11 +27,18 @@ class BookAPI(Resource):
         book.create_book()
         return {"message":"Book created successfully"}, 201
 
+    def update(self):
+        pass
+
+    def delete(self):
+        pass
 
     def get(self):
         search_string = request.args.get('search_string')
         query = {
-            "queryLst" : []
+            "queryLst" : [
+
+            ]
         }
         result = BookModel.get_search_result(search_string)
         for row in result:

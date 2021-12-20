@@ -3,12 +3,13 @@ from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
 from resource.book_resource import BookAPI
-
+from resource.position_resource import PositionAPI
 app = Flask(__name__)
 api = Api(app)
 
 # api.add_resource(BookAPI, '/api/createbook', endpoint='Book1')
-api.add_resource(BookAPI, '/api/getbook', endpoint='Book2')
+api.add_resource(BookAPI, '/api/getbook')
+api.add_resource(PositionAPI, '/api/getposition')
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 
