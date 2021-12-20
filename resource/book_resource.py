@@ -1,10 +1,12 @@
 import datetime
 from re import search
+
+from flask import request
 from flask_restful import Resource, reqparse
-from sqlalchemy import Column, Integer, String, DateTime
+from model.book_model import BookModel
+from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.orm import Session
 
-from model.book_model import BookModel
 
 class BookAPI(Resource):
     parser = reqparse.RequestParser()
@@ -18,7 +20,6 @@ class BookAPI(Resource):
     parser.add_argument('Dimensions', type=str)
     parser.add_argument('editionNumber', type=str)
     parser.add_argument('translator', type=int)
-    parser.add_argument('searchString', type=str)
 
 
     def post(self):
@@ -32,18 +33,14 @@ class BookAPI(Resource):
 
 
     def get(self):
-        data = BookAPI.parser.parse_args()
+        search_string = request.args.get('search_string')
         query = {
             "queryLst" : []
         }
-        try:
-            search_string = data['searchString']
-        except KeyError as err:
-            print(err)
-            return {"message":"Did not recieve any search string"}, 400
         result = BookModel.get_search_result(search_string)
         for row in result:
             query["queryLst"].append({
+                "book_id":f"{row[0].book_id}",
                 "book_name":f"{row[0].book_name}",
                 "author":f"{row[0].author}"
                 });

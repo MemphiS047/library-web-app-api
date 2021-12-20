@@ -1,8 +1,6 @@
-from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.orm import Session
-from sqlalchemy import select
-
 from DB.alchemy_setup import ORM, engine
+from sqlalchemy import Column, DateTime, Integer, String, select
+from sqlalchemy.orm import Session
 
 Base = ORM()
 engine = engine() 

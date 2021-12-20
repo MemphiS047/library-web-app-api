@@ -7,7 +7,7 @@ from resource.book_resource import BookAPI
 app = Flask(__name__)
 api = Api(app)
 
-api.add_resource(BookAPI, '/api/createbook', endpoint='Book1')
+# api.add_resource(BookAPI, '/api/createbook', endpoint='Book1')
 api.add_resource(BookAPI, '/api/getbook', endpoint='Book2')
 
 app.config['CORS_HEADERS'] = 'Content-Type'
