@@ -1,23 +1,19 @@
-from re import S
-from flask import Flask
-from flask_restful import Api
-from flask_cors import CORS
+from resource.announcement_resource import AnnouncementAPI
 from resource.book_resource import BookAPI
 from resource.position_resource import PositionAPI
+
+from flask import Flask
+from flask_cors import CORS
+from flask_restful import Api
+
 app = Flask(__name__)
 api = Api(app)
 
-# api.add_resource(BookAPI, '/api/createbook', endpoint='Book1')
-api.add_resource(BookAPI, '/api/getbook')
-api.add_resource(PositionAPI, '/api/getposition')
+api.add_resource(BookAPI, '/api/managebook')
+api.add_resource(PositionAPI, '/api/managebook')
+api.add_resource(AnnouncementAPI, '/api/manageannouncements')
 
 app.config['CORS_HEADERS'] = 'Content-Type'
-
-# def after_request(response):
-#     response.headers.add('Access-Control-Allow-Origin', '*')
-#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Autherization')
-#     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-#     return response
 
 if __name__ == "__main__":
     cors = CORS(app)
