@@ -9,8 +9,8 @@ from flask_restful import Api
 app = Flask(__name__)
 api = Api(app)
 
-api.add_resource(BookAPI, '/api/managebook')
-api.add_resource(PositionAPI, '/api/managebook')
+api.add_resource(BookAPI, '/api/managebooks')
+api.add_resource(PositionAPI, '/api/managepositions')
 api.add_resource(AnnouncementAPI, '/api/manageannouncements')
 
 app.config['CORS_HEADERS'] = 'Content-Type'
