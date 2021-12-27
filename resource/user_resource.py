@@ -18,20 +18,21 @@ class UserAPI(Resource):
         data['username'],data['is_admin'],data['password'])
         result = UserModel.get_user_email(user.username)
         if(result):
-            return {"message": "Account with that email already exists"}, 400
+            return {"message": "Account with that email already exists"}
         else:
             user.addUser()
             return {"message": "User created successfully"}, 201
 
 class AuthAPI(Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument('username', type=str)
-    parser.add_argument('password', type=str)
+    par = reqparse.RequestParser()
+    par.add_argument('username', type=str)
+    par.add_argument('password', type=str)
     
-    def get(self):
-        body = AuthAPI.parser.parse_args()
+    def post(self):
+        body = AuthAPI.par.parse_args()
         result = UserModel.get_user_email(body["username"])
-        if(result):
+        print("Request body:", body ,"\nQuery result:",result)
+        if(result and (body["password"] == result.password and body["username"] == result.username)):
             return {"message": "Authentication successful"}, 201
         else:
-            return {"message": "Couldn't find any user with these credentials"}, 400
+            return {"message": "Couldn't find any user with these credentials"}
