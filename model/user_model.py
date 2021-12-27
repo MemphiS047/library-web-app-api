@@ -44,7 +44,7 @@ class UserModel(Base):
             return False
     
     @classmethod
-    def get_user_email(cls, username):
+    def get_user_by_email(cls, username):
         with Session(engine) as session:
             result = session.query(cls).filter_by(username = username).first()
             return result
