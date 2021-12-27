@@ -11,19 +11,6 @@ from DB.alchemy_setup import ORM, engine
 Base = ORM()
 engine = engine()
 
-'''
-+------------+--------------+------+-----+---------+----------------+
-| Field      | Type         | Null | Key | Default | Extra          |
-+------------+--------------+------+-----+---------+----------------+
-| user_id    | int unsigned | NO   | PRI | NULL    | auto_increment |
-| firstname  | varchar(50)  | NO   |     | NULL    |                |
-| lastname   | varchar(50)  | NO   |     | NULL    |                |
-| faculty    | varchar(100) | NO   |     | NULL    |                |
-| department | varchar(100) | NO   |     | NULL    |                |
-| school_id  | int unsigned | NO   | PRI | NULL    |                |
-+------------+--------------+------+-----+---------+----------------+
-'''
-
 class UserModel(Base):
 
     class myEnum(enum.Enum):
@@ -41,7 +28,7 @@ class UserModel(Base):
     is_admin = Column(Enum(myEnum))
     password = Column(VARCHAR)
 
-    def __init__(self, firstname, lastname, faculty, department,username,is_admin,password):
+    def __init__(self, firstname, lastname, faculty, department, username, is_admin, password):
         self.firstname = firstname
         self.lastname = lastname
         self.faculty = faculty
@@ -61,4 +48,3 @@ class UserModel(Base):
         with Session(engine) as session:
             result = session.query(cls).filter_by(username = username).first()
             return result
-        return None
