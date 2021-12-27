@@ -9,12 +9,10 @@ from flask_restful import Api
 from resource.user_resource import UserAPI, AuthAPI
 
 
-
 app = Flask(__name__)
 api = Api(app)
 
 app.config['SECRET_KEY'] = 'super-secret'
-
 
 api.add_resource(AuthAPI, '/api/auth')
 api.add_resource(UserAPI, '/api/register')
