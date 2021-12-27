@@ -13,7 +13,7 @@ def ORM():
 
 
 def engine():
-    DATABASE_URI = 'mysql+mysqlconnector://{user}:{password}@{server}/{database}'.format(
+    DATABASE_URI = 'mysql+mysqlconnector://{user}:{password}@{server}/{database}?auth_plugin=mysql_native_password'.format(
         user = config['DB']['user'],
         password = config['DB']['password'],
         server = config['DB']['host'],
