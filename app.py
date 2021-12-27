@@ -6,9 +6,18 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 
+from resource.user_resource import UserAPI, AuthAPI
+
+
+
 app = Flask(__name__)
 api = Api(app)
 
+app.config['SECRET_KEY'] = 'super-secret'
+
+
+api.add_resource(AuthAPI, '/api/auth')
+api.add_resource(UserAPI, '/api/register')
 api.add_resource(BookAPI, '/api/managebooks')
 api.add_resource(PositionAPI, '/api/managepositions')
 api.add_resource(AnnouncementAPI, '/api/manageannouncements')
