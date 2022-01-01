@@ -35,7 +35,6 @@ class AuthAPI(Resource):
             return {"message": "Authentication successful",
             "credentials" : {
                 "username" : result.username,
-                "password" : result.password,
                 "firstname" : result.firstname,
                 "lastname" : result.lastname,
                 }
