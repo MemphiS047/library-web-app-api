@@ -43,8 +43,23 @@ class BookAPI(Resource):
         result = BookModel.get_search_result(search_string)
         for row in result:
             query["queryLst"].append({
-                "book_id":f"{row[0].book_id}",
-                "book_name":f"{row[0].book_name}",
-                "author":f"{row[0].author}"
+                "bookId":f"{row[0].book_id}",
+                "bookName":f"{row[0].book_name}",
+                "authorName":f"{row[0].author}"
                 });
         return query, 201, {'Access-Control-Allow-Origin': '*'}
+
+class BorrowAPI(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('bookId', type=int)
+    parser.add_argumetn('userId', type=str)
+
+
+    def post(self):
+        borrowed_date = datetime.now()
+        data = BorrowAPI.parser.parse_args()
+        
+        bookId = data["bookId"]
+        userId = data["userId"]
+        deadline = borrowed_date + datetime.timedelta(days=20)
+        is_returned = False

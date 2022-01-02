@@ -1,25 +1,26 @@
 from DB.alchemy_setup import ORM, engine
-from sqlalchemy import Column, DateTime, Integer, String, select
+from sqlalchemy import Column, DateTime, Integer, String, select, Enum
 from sqlalchemy.orm import Session
-
+import enum
 Base = ORM()
 engine = engine() 
 
+
 class BookModel(Base):
 
-    __tablename__ = 'books'
+    class myEnum(enum.Enum):
+        false = 0
+        true = 1
 
-    book_id             = Column(Integer, primary_key=True) 
-    book_name           = Column(String)
-    author              = Column(String)
-    prolog              = Column(String)
-    Publisher           = Column(String)
-    Language            = Column(String)
-    Publication_Date    = Column(DateTime)
-    numberOFPages       = Column(Integer)
-    Dimensions          = Column(String)
-    editionNumber       = Column(Integer)
-    translator          = Column(String)
+    __tablename__ = 'book_reservations'
+
+    reservation_id      = Column(Integer, primary_key=True)
+    book_id             = Column(Integer)
+    reserv_datetime     = Column(DateTime)
+    duration            = Column(Integer)
+    user_id             = Column(Integer)
+    return_date         = Column(DateTime)
+    is_returned         = Column(Enum(myEnum))
 
     def __init__(self, book_id, book_name, author, prolog, Publisher, Language, Publication_Date, numberOFPages, Dimensions, editionNumber, translator):
         self.book_id            = book_id
