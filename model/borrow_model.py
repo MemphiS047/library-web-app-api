@@ -18,8 +18,7 @@ class BorrowModel(Base):
     user_id             = Column(Integer)
     is_returned         = Column(Integer)
 
-    def __init__(self, reservation_id, book_id, reserv_datetime, duration, user_id, is_returned):
-        self.reservation_id      = reservation_id
+    def __init__(self, book_id, reserv_datetime, duration, user_id, is_returned):
         self.book_id             = book_id
         self.reserv_datetime     = reserv_datetime
         self.duration            = duration

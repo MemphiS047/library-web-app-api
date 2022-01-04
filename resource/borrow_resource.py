@@ -8,7 +8,6 @@ from model.book_model import BookModel
 
 class BorrowAPI(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('reservation_id', type=int)
     parser.add_argument('book_id', type=int)
     parser.add_argument('reserv_datetime', type=str)
     parser.add_argument('duration', type=int)
@@ -17,7 +16,7 @@ class BorrowAPI(Resource):
   
     def post(self):
         data = BorrowAPI.parser.parse_args()
-        borrow_req = BorrowModel(data['reservation_id'], data['book_id'], data['reserv_datetime'], data['duration'], data['user_id'], data['is_returned'])
+        borrow_req = BorrowModel(data['book_id'], data['reserv_datetime'], data['duration'], data['user_id'], data['is_returned'])
         book_model = BookModel.get_book_by_id(data['book_id'])
         borrow_req.create_borrow_request()
         book_model.update_status()
