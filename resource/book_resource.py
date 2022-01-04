@@ -15,7 +15,7 @@ class BookAPI(Resource):
     parser.add_argument('numberOFPages', type=int)
     parser.add_argument('Dimensions', type=str)
     parser.add_argument('editionNumber', type=str)
-    parser.add_argument('translator', type=int)
+    parser.add_argument('is_available', type=int)
 
 
     def post(self):
@@ -23,7 +23,7 @@ class BookAPI(Resource):
         book = BookModel(data['book_id'], data['book_name'], data['prolog'], 
                             data['Publisher'], data['Language'], 
                             data['Publication_Date'], data['numberOFPages'],
-                            data['Dimensions'], data['editionNumber'], data['translator'])
+                            data['Dimensions'], data['editionNumber'], data['is_available'])
         book.create_book()
         return {"message":"Book created successfully"}, 201
 
@@ -42,24 +42,10 @@ class BookAPI(Resource):
         }
         result = BookModel.get_search_result(search_string)
         for row in result:
-            query["queryLst"].append({
-                "bookId":f"{row[0].book_id}",
-                "bookName":f"{row[0].book_name}",
-                "authorName":f"{row[0].author}"
-                });
+            if(row[0].is_available == 1):
+                query["queryLst"].append({
+                    "bookId":f"{row[0].book_id}",
+                    "bookName":f"{row[0].book_name}",
+                    "authorName":f"{row[0].author}"
+                    });
         return query, 201, {'Access-Control-Allow-Origin': '*'}
-
-class BorrowAPI(Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument('bookId', type=int)
-    parser.add_argumetn('userId', type=str)
-
-
-    def post(self):
-        borrowed_date = datetime.now()
-        data = BorrowAPI.parser.parse_args()
-        
-        bookId = data["bookId"]
-        userId = data["userId"]
-        deadline = borrowed_date + datetime.timedelta(days=20)
-        is_returned = False

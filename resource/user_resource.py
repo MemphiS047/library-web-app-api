@@ -34,6 +34,7 @@ class AuthAPI(Resource):
         if(result and (body["password"] == result.password and body["username"] == result.username)):
             return {"message": "Authentication successful",
             "credentials" : {
+                "userid": result.user_id,
                 "username" : result.username,
                 "firstname" : result.firstname,
                 "lastname" : result.lastname,
