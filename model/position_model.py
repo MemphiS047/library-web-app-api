@@ -14,8 +14,7 @@ class PositionModel(Base):
     payment             = Column(Integer)
     job_type            = Column(String)
 
-    def __init__(self, job_id, job_title, Job_description, payment, job_type):
-        self.job_id = job_id
+    def __init__(self, job_title, Job_description, payment, job_type):
         self.job_title = job_title
         self.Job_description = Job_description 
         self.payment = payment

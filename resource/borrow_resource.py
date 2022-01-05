@@ -14,6 +14,7 @@ class BorrowAPI(Resource):
     parser.add_argument('duration', type=int)
     parser.add_argument('user_id', type=int)
     parser.add_argument('is_returned', type=int)
+    parser.add_argument('reservation_id', type=int)
   
     def post(self):
         data = BorrowAPI.parser.parse_args()
@@ -27,24 +28,31 @@ class BorrowAPI(Resource):
         pass
 
     def delete(self):
-        pass
+        data = BorrowAPI.parser.parse_args()
+        print("DATA $: ", data)
+        BookModel.make_book_available(data["book_id"])
+        borrow_record = BorrowModel.get_borrow_record_by_id(data["reservation_id"])
+        borrow_record.delete_borrow()
+        return {"message" : "Successfully deleted reservation record"}, 201
     
     def get(self):
+        user_id = request.args.get('search_string')
         query = {
             "queryLst" : [
 
             ]
         }
-        result = BorrowModel.get_all_borrow_status()
-        for row in result:
-            user = UserModel.get_user_by_id(row["user_id"])
-            book = BookModel.get_book_by_id(row["book_id"])
+        borrow_results = BorrowModel.get_all_borrow_status_by_user_id(user_id)
+        user = UserModel.get_user_by_id(user_id)
+        for borrow_row in borrow_results:
+            book = BookModel.get_book_by_id(borrow_row["book_id"])
             query["queryLst"].append({
-                "book_id" : row["book_id"],
-                "reserv_datetime": str(row["reserv_datetime"]),
-                "duration": row["duration"],
-                "user_id": row["user_id"],
-                "is_returned": row["is_returned"],
+                "reservation_id" : borrow_row["reservation_id"],
+                "book_id" : borrow_row["book_id"],
+                "reserv_datetime": str(borrow_row["reserv_datetime"]),
+                "duration": borrow_row["duration"],
+                "user_id": borrow_row["user_id"],
+                "is_returned": borrow_row["is_returned"],
                 "firstname": user.firstname,
                 "bookname": book.book_name,
             })

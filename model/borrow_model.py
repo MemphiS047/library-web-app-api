@@ -39,7 +39,12 @@ class BorrowModel(Base):
             session.commit()
     
     @classmethod
-    def get_all_borrow_status(cls):
-        result = Session(engine).execute(select(cls.reservation_id, cls.book_id, cls.reserv_datetime, cls.duration, cls.user_id, cls.is_returned))
+    def get_borrow_record_by_id(cls, reservation_id):
+        with Session(engine) as session:
+            result = session.query(cls).filter_by(reservation_id=reservation_id).first()
+            return result
+
+    @classmethod
+    def get_all_borrow_status_by_user_id(cls, user_id):
+        result = Session(engine).execute(select(cls.reservation_id, cls.book_id, cls.reserv_datetime, cls.duration, cls.user_id, cls.is_returned).where(cls.user_id == user_id))
         return result
-    

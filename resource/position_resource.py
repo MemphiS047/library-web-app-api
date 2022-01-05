@@ -15,7 +15,7 @@ class PositionAPI(Resource):
     parser.add_argument('user_id')
     parser.add_argument('respond', type=str)
 
-    def post(self):
+    def get(self):
         data = PositionAPI.parser.parse_args()
         query = {
             "queryLst": [
@@ -42,6 +42,12 @@ class PositionAPI(Resource):
             })
         return query, 201, {'Access-Control-Allow-Origin': '*'}
 
+    def post(self):
+        data = PositionAPI.parser.parse_args()
+        position_model = PositionModel(data['job_title'], data['Job_description'], data['payment'], data['job_type'])
+        position_model.create_position()
+        return {"message" : "Position created successfully"} , 201
+    
     def update(self):
         pass
 

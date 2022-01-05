@@ -64,3 +64,15 @@ class BookModel(Base):
         with Session(engine) as session:
             result = session.query(cls).filter_by(book_id=book_id).first()
             return result
+
+    @classmethod
+    def get_books_by_id_name(cls, search_string):
+        search = "%{}%".format(search_string)
+        result = Session(engine).execute(select(cls.book_id, cls.book_name).where(cls.book_id.like(search) | cls.book_name.like(search)))
+        return result
+    
+    @classmethod
+    def make_book_available(cls, book_id):
+        with Session(engine) as session:
+            session.query(cls).filter(cls.book_id == book_id).update({'is_available': 1})
+            session.commit() 
