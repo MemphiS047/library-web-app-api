@@ -37,3 +37,9 @@ class BorrowModel(Base):
         with Session(engine) as session:
             session.delete(self)
             session.commit()
+    
+    @classmethod
+    def get_all_borrow_status(cls):
+        result = Session(engine).execute(select(cls.reservation_id, cls.book_id, cls.reserv_datetime, cls.duration, cls.user_id, cls.is_returned))
+        return result
+    

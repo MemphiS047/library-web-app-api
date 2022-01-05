@@ -19,6 +19,13 @@
 -- Table structure for table `authentication`
 --
 
+-- CREATE TABLE announcements(
+-- announce_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+-- announcer INT UNSIGNED NOT NULL, 
+-- message LONGTEXT NOT NULL, 
+-- announce_datetime datetime default now(), 
+-- last_edit datetime ON UPDATE CURRENT_TIMESTAMP);
+
 DROP TABLE IF EXISTS `authentication`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;

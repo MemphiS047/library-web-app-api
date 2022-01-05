@@ -38,6 +38,7 @@ class AuthAPI(Resource):
                 "username" : result.username,
                 "firstname" : result.firstname,
                 "lastname" : result.lastname,
+                "is_admin" : result.is_admin
                 }
             }, 201
         else:

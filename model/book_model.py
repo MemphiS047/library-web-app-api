@@ -21,18 +21,17 @@ class BookModel(Base):
     editionNumber       = Column(Integer)
     is_available        = Column(Integer)
 
-    def __init__(self, book_id, book_name, author, prolog, Publisher, Language, Publication_Date, numberOFPages, Dimensions, editionNumber, is_available):
-        self.book_id            = book_id
+    def __init__(self, book_name, author, Publisher, Language, numberOFPages, is_available):
         self.book_name          = book_name
         self.author             = author
-        self.prolog             = prolog
+        self.prolog             = None
         self.Publisher          = Publisher
         self.Language           = Language
-        self.Publication_Date   = Publication_Date
+        self.Publication_Date   = None
         self.numberOFPages      = numberOFPages
-        self.Dimensions         = Dimensions
-        self.editionNumber      = editionNumber
-        self.is_available       = is_available 
+        self.Dimensions         = None
+        self.editionNumber      = None
+        self.is_available       = is_available
 
     def create_book(self):
         with Session(engine) as session:
