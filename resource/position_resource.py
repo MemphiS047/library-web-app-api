@@ -23,7 +23,7 @@ class PositionAPI(Resource):
             ]
         }
         jobApplicationUid, appliedJob = "N/A", "N/A"
-        if("user_id" != ""):
+        if(data["user_id"] != ""):
             result_1 = JobApplicationModel.get_job_application_by_user_id(data["user_id"])
             if(result_1 != None):
                 jobApplicationUid = result_1.user_id

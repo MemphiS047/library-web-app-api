@@ -55,6 +55,7 @@ class BorrowAPI(Resource):
                 "is_returned": borrow_row["is_returned"],
                 "firstname": user.firstname,
                 "bookname": book.book_name,
+                "author": book.author
             })
         return query, 201, {'Access-Control-Allow-Origin': '*'}
 

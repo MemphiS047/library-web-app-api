@@ -2,6 +2,9 @@ from resource.announcement_resource import AnnouncementAPI
 from resource.book_resource import BookAPI
 from resource.position_resource import PositionAPI, PositionManagmenetAPI
 from resource.borrow_resource import BorrowAPI
+from resource.traffic_resource import TrafficAPI, TrafficCompAPI
+from resource.reserve_room_resource import ReserveRoomAPI
+
 
 from flask import Flask
 from flask_cors import CORS
@@ -20,6 +23,9 @@ api.add_resource(PositionAPI, '/api/managepositions')
 api.add_resource(PositionManagmenetAPI, '/api/apply')
 api.add_resource(AnnouncementAPI, '/api/manageannouncements')
 api.add_resource(BorrowAPI, '/api/borrow')
+api.add_resource(TrafficAPI, '/api/traffic')
+api.add_resource(TrafficCompAPI, '/api/trafficComp')
+api.add_resource(ReserveRoomAPI, '/api/managereserveroom')
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 
