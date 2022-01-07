@@ -16,7 +16,7 @@ class UserAPI(Resource):
         data = UserAPI.parser.parse_args()
         user = UserModel(data['firstname'],data['lastname'],data['faculty'],data['department'],
         data['username'],data['is_admin'],data['password'])
-        result = UserModel.get_user_email(user.username)
+        result = UserModel.get_user_by_email(user.username)
         if(result):
             return {"message": "Account with that email already exists"}
         else:
@@ -30,9 +30,16 @@ class AuthAPI(Resource):
     
     def post(self):
         body = AuthAPI.par.parse_args()
-        result = UserModel.get_user_email(body["username"])
-        print("Request body:", body ,"\nQuery result:",result)
+        result = UserModel.get_user_by_email(body["username"])
         if(result and (body["password"] == result.password and body["username"] == result.username)):
-            return {"message": "Authentication successful"}, 201
+            return {"message": "Authentication successful",
+            "credentials" : {
+                "userid": result.user_id,
+                "username" : result.username,
+                "firstname" : result.firstname,
+                "lastname" : result.lastname,
+                "is_admin" : result.is_admin
+                }
+            }, 201
         else:
             return {"message": "Couldn't find any user with these credentials"}

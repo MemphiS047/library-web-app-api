@@ -19,29 +19,33 @@ class BookModel(Base):
     numberOFPages       = Column(Integer)
     Dimensions          = Column(String)
     editionNumber       = Column(Integer)
-    translator          = Column(String)
+    is_available        = Column(Integer)
 
-    def __init__(self, book_id, book_name, author, prolog, Publisher, Language, Publication_Date, numberOFPages, Dimensions, editionNumber, translator):
-        self.book_id            = book_id
+    def __init__(self, book_name, author, Publisher, Language, numberOFPages, is_available):
         self.book_name          = book_name
         self.author             = author
-        self.prolog             = prolog
+        self.prolog             = None
         self.Publisher          = Publisher
         self.Language           = Language
-        self.Publication_Date   = Publication_Date
+        self.Publication_Date   = None
         self.numberOFPages      = numberOFPages
-        self.Dimensions         = Dimensions
-        self.editionNumber      = editionNumber
-        self.translator         = translator 
+        self.Dimensions         = None
+        self.editionNumber      = None
+        self.is_available       = is_available
 
     def create_book(self):
         with Session(engine) as session:
             session.add(self)
             session.commit()
 
-    def update_bookname(self, new_name):
+    def update_status(self):
+        new_status = 1 # By defualt 1 
+        if(self.is_available == 0):
+            new_status = 1
+        else:
+            new_status = 0
         with Session(engine) as session:
-            session.query(self.__class__).filter(self.__class__.name == self.name).update({'status': new_name})
+            session.query(self.__class__).filter(self.__class__.book_id == self.book_id).update({'is_available': new_status})
             session.commit() 
 
     def delete_book(self):
@@ -54,3 +58,21 @@ class BookModel(Base):
         search = "%{}%".format(search_string)
         result = Session(engine).execute(select(cls).where(cls.author.like(search) | cls.book_name.like(search)))
         return result
+    
+    @classmethod
+    def get_book_by_id(cls, book_id):
+        with Session(engine) as session:
+            result = session.query(cls).filter_by(book_id=book_id).first()
+            return result
+
+    @classmethod
+    def get_books_by_id_name(cls, search_string):
+        search = "%{}%".format(search_string)
+        result = Session(engine).execute(select(cls.book_id, cls.book_name).where(cls.book_id.like(search) | cls.book_name.like(search)))
+        return result
+    
+    @classmethod
+    def make_book_available(cls, book_id):
+        with Session(engine) as session:
+            session.query(cls).filter(cls.book_id == book_id).update({'is_available': 1})
+            session.commit() 

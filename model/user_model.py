@@ -13,10 +13,6 @@ engine = engine()
 
 class UserModel(Base):
 
-    class myEnum(enum.Enum):
-        false = 0
-        true = 1
-
     __tablename__ = 'users'
 
     user_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -25,7 +21,7 @@ class UserModel(Base):
     faculty = Column(String)
     department = Column(String)
     username = Column(VARCHAR, primary_key=True)
-    is_admin = Column(Enum(myEnum))
+    is_admin = Column(Integer)
     password = Column(VARCHAR)
 
     def __init__(self, firstname, lastname, faculty, department, username, is_admin, password):
@@ -44,7 +40,13 @@ class UserModel(Base):
             return False
     
     @classmethod
-    def get_user_email(cls, username):
+    def get_user_by_email(cls, username):
         with Session(engine) as session:
             result = session.query(cls).filter_by(username = username).first()
+            return result
+    
+    @classmethod
+    def get_user_by_id(cls, user_id):
+        with Session(engine) as session:
+            result = session.query(cls).filter_by(user_id = user_id).first()
             return result

@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 Base = ORM()
 engine = engine() 
 
+
+
 class AnnouncementModel(Base):
 
     __tablename__ = "announcements"
