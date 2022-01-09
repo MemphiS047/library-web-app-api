@@ -1,5 +1,5 @@
 from DB.alchemy_setup import ORM, engine
-from sqlalchemy import Column, DateTime, Integer, String, select, ForeignKey
+from sqlalchemy import Column, DateTime, Integer, String, select
 from sqlalchemy.orm import Session
 import enum
 from .user_model import UserModel
@@ -16,7 +16,7 @@ class BorrowModel(Base):
     book_id             = Column(Integer)
     reserv_datetime     = Column(String)
     duration            = Column(Integer)
-    user_id             = Column(Integer, ForeignKey("user.user_id"), nullable=False)
+    user_id             = Column(Integer)
     is_returned         = Column(Integer)
 
     def __init__(self, book_id, reserv_datetime, duration, user_id, is_returned):

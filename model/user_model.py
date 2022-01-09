@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session, backref, relationship
 from sqlalchemy import select
 from sqlalchemy.sql.expression import false, true
 import enum
-from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import BOOLEAN, VARCHAR, Boolean, Enum
 
 from DB.alchemy_setup import ORM, engine

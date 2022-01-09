@@ -45,7 +45,6 @@ class BorrowAPI(Resource):
         }
         result = BorrowModel.get_all_borrow_status_by_username(username)
         for row in result:
-            print("ROW", row)
             book = BookModel.get_book_by_id(row[0].book_id)
             query["queryLst"].append({
                 "reservation_id" : row[0].reservation_id,
