@@ -1,7 +1,8 @@
 from DB.alchemy_setup import ORM, engine
-from sqlalchemy import Column, DateTime, Integer, String, select
+from sqlalchemy import Column, DateTime, Integer, String, select, ForeignKey
 from sqlalchemy.orm import Session
 import enum
+from .user_model import UserModel
 Base = ORM()
 engine = engine() 
 
@@ -15,7 +16,7 @@ class BorrowModel(Base):
     book_id             = Column(Integer)
     reserv_datetime     = Column(String)
     duration            = Column(Integer)
-    user_id             = Column(Integer)
+    user_id             = Column(Integer, ForeignKey("user.user_id"), nullable=False)
     is_returned         = Column(Integer)
 
     def __init__(self, book_id, reserv_datetime, duration, user_id, is_returned):
@@ -45,6 +46,6 @@ class BorrowModel(Base):
             return result
 
     @classmethod
-    def get_all_borrow_status_by_user_id(cls, user_id):
-        result = Session(engine).execute(select(cls.reservation_id, cls.book_id, cls.reserv_datetime, cls.duration, cls.user_id, cls.is_returned).where(cls.user_id == user_id))
+    def get_all_borrow_status_by_username(cls, username):
+        result = Session(engine).query(cls, UserModel).join(UserModel, UserModel.user_id == cls.user_id).filter(UserModel.username == username)
         return result

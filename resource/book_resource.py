@@ -37,12 +37,16 @@ class BookAPI(Resource):
 
             ]
         }
+        value_of_is_available = False
         result = BookModel.get_search_result(search_string)
         for row in result:
+            # if(row[0].is_available == 1):
             if(row[0].is_available == 1):
-                query["queryLst"].append({
-                    "bookId":f"{row[0].book_id}",
-                    "bookName":f"{row[0].book_name}",
-                    "authorName":f"{row[0].author}"
-                    });
+                value_of_is_available = True
+            query["queryLst"].append({
+                "bookId":f"{row[0].book_id}",
+                "bookName":f"{row[0].book_name}",
+                "authorName":f"{row[0].author}",
+                "is_available": value_of_is_available
+                });
         return query, 201, {'Access-Control-Allow-Origin': '*'}

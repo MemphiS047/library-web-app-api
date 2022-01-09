@@ -36,24 +36,25 @@ class BorrowAPI(Resource):
         return {"message" : "Successfully deleted reservation record"}, 201
     
     def get(self):
-        user_id = request.args.get('search_string')
+        username = request.args.get('search_string')
+        username = username + "@std.medipol.edu.tr"
         query = {
             "queryLst" : [
 
             ]
         }
-        borrow_results = BorrowModel.get_all_borrow_status_by_user_id(user_id)
-        user = UserModel.get_user_by_id(user_id)
-        for borrow_row in borrow_results:
-            book = BookModel.get_book_by_id(borrow_row["book_id"])
+        result = BorrowModel.get_all_borrow_status_by_username(username)
+        for row in result:
+            print("ROW", row)
+            book = BookModel.get_book_by_id(row[0].book_id)
             query["queryLst"].append({
-                "reservation_id" : borrow_row["reservation_id"],
-                "book_id" : borrow_row["book_id"],
-                "reserv_datetime": str(borrow_row["reserv_datetime"]),
-                "duration": borrow_row["duration"],
-                "user_id": borrow_row["user_id"],
-                "is_returned": borrow_row["is_returned"],
-                "firstname": user.firstname,
+                "reservation_id" : row[0].reservation_id,
+                "book_id" : row[0].book_id,
+                "reserv_datetime": str(row[0].reserv_datetime),
+                "duration": row[0].duration,
+                "user_id": row[0].user_id,
+                "is_returned": row[0].is_returned,
+                "firstname": row[1].firstname,
                 "bookname": book.book_name,
                 "author": book.author
             })
