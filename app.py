@@ -11,6 +11,7 @@ from flask_cors import CORS
 from flask_restful import Api
 
 from resource.user_resource import UserAPI, AuthAPI
+from resource.jounral_resource import GoogleScholarAPI
 
 app = Flask(__name__)
 api = Api(app)
@@ -26,7 +27,7 @@ api.add_resource(BorrowAPI, '/api/borrow')
 api.add_resource(TrafficAPI, '/api/traffic')
 api.add_resource(TrafficCompAPI, '/api/trafficComp')
 api.add_resource(ReserveRoomAPI, '/api/managereserveroom')
-
+api.add_resource(GoogleScholarAPI, '/api/googlescholar')
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.after_request

@@ -4,7 +4,11 @@ from serpapi import GoogleSearch
 
 class GoogleScholarAPI(Resource):
     def get(self):
-        search_string = request.args.get('search_string')
+        result = {
+
+        }
+        search_string = request.args.get('searchString')
+        print("SEARCH STRING FOR JOURNA:", search_string)
         params = {
             "engine": "google_scholar",
             "q": f"{search_string}",
@@ -12,4 +16,5 @@ class GoogleScholarAPI(Resource):
         }
         search = GoogleSearch(params)
         results = search.get_dict()
-        return results['organic_results'], 201, {'Access-Control-Allow-Origin': '*'}
+        result["queryLst"] = results['organic_results']
+        return result, 201, {'Access-Control-Allow-Origin': '*'}
