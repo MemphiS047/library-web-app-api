@@ -49,4 +49,5 @@ class BookAPI(Resource):
                 "authorName":f"{row[0].author}",
                 "is_available": value_of_is_available
                 });
+            value_of_is_available = False
         return query, 201, {'Access-Control-Allow-Origin': '*'}

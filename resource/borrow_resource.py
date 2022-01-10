@@ -43,6 +43,7 @@ class BorrowAPI(Resource):
 
             ]
         }
+        print(username)
         result = BorrowModel.get_all_borrow_status_by_username(username)
         for row in result:
             book = BookModel.get_book_by_id(row[0].book_id)
@@ -57,5 +58,6 @@ class BorrowAPI(Resource):
                 "bookname": book.book_name,
                 "author": book.author
             })
+        print(query)
         return query, 201, {'Access-Control-Allow-Origin': '*'}
 
